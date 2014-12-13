@@ -1,0 +1,8 @@
+zookeeper:
+  connectionString: "zookeeper:2181"
+marathon:
+  url: "http://marathon:8080"
+proxy:
+  haproxy:
+    templatePath: "haproxy.cfg"
+    reloadCommand: "haproxy -f /etc/haproxy/haproxy.cfg -p /var/run/haproxy.pid -sf $(ps -C haproxy -o pid | tail -n +2 | tr '\n' ' ')"

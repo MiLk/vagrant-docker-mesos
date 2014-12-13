@@ -64,4 +64,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
+  config.vm.define "frontrunner" do |base|
+    base.vm.provider "docker" do |d|
+      d.name = "frontrunner"
+      d.build_dir = "frontrunner"
+      d.build_args = ["-t","frontrunner"]
+      d.remains_running = "true"
+      d.ports = ["80:8000"]
+      d.link("zookeeper:zookeeper")
+      d.link("marathon:marathon")
+      d.link("mesos-slave:mesos-slave")
+    end
+  end
+
 end
