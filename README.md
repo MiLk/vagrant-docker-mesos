@@ -38,9 +38,17 @@ docker pull mesosphere/marathon
 vagrant up zookeeper --provider=docker
 vagrant up mesos-master --provider=docker
 vagrant up mesos-slave --provider=docker
+vagrant up marathon --provider=docker
 ```
 
 ### Access Mesos UI
 
 Go to [127.0.0.1:5050](http://127.0.0.1:5050/).
+
+To be able to use all the features of the UI, you need to be able to resolve the domain name of the slave.
+It can be done by adding `127.0.0.1   mesos-slave` to your `/etc/hosts` file.
+
+### Access Marathon UI
+
+Go to [127.0.0.1:8080](http://127.0.0.1:8080/).
 

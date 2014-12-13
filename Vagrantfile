@@ -26,7 +26,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         "MESOS_LOG_DIR" => "/var/log",
         "MESOS_WORK_DIR" => "/var/lib/mesos",
         "MESOS_QUORUM" => 1,
-        "MESOS_ZK" => "zk://zookeeper:2181/mesos"
+        "MESOS_ZK" => "zk://zookeeper:2181/mesos",
+        "MESOS_HOSTNAME" => "mesos-master"
       }
       d.ports = ["5050:5050"]
       d.link("zookeeper:zookeeper")
@@ -41,10 +42,25 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       d.remains_running = "true"
       d.env = {
         "MESOS_LOG_DIR" => "/var/log",
-        "MESOS_MASTER" => "zk://zookeeper:2181/mesos"
+        "MESOS_MASTER" => "zk://zookeeper:2181/mesos",
+        "MESOS_HOSTNAME" => "mesos-slave"
       }
       d.ports = ["5051:5051"]
       d.link("zookeeper:zookeeper")
+    end
+  end
+
+  config.vm.define "marathon" do |base|
+    base.vm.provider "docker" do |d|
+      d.name = "marathon"
+      d.image = "mesosphere/marathon"
+      d.remains_running = "true"
+      d.ports = ["8080:8080"]
+      d.link("zookeeper:zookeeper")
+      d.cmd = [
+               "--master", "zk://zookeeper:2181/mesos",
+               "--zk", "zk://zookeeper:2181/marathon"
+              ]
     end
   end
 
